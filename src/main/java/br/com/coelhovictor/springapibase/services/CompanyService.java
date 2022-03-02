@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.coelhovictor.springapibase.domain.Company;
 import br.com.coelhovictor.springapibase.repositories.CompanyRepository;
+import br.com.coelhovictor.springapibase.services.exceptions.NotFoundException;
 
 @Service
 public class CompanyService {
@@ -16,7 +17,8 @@ public class CompanyService {
 	private CompanyRepository repository;
 
 	public Company findById(Integer id) {
-		return repository.findById(id).orElse(null);
+		return repository.findById(id).orElseThrow(() -> 
+			new NotFoundException("Company", id));
 	}
 	
 	public Page<Company> findAll(Integer page, Integer linesPerPage,
