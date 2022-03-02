@@ -23,7 +23,7 @@ public class CompanyDTO implements Serializable {
 	
 	@NotEmpty(message = "Required field")
 	@Length(min = 3, max = 30, message = "The length must be "
-			+ "between 5 and 30 characters")
+			+ "between 3 and 30 characters")
 	private String shortName;
 	
 	@JsonFormat(pattern = "MM/dd/yyyy HH:mm")
