@@ -1,42 +1,38 @@
 package br.com.coelhovictor.springapibase.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Company implements Serializable {
+public class Country implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
-	private String shortName;
-	private Date foundationDate;
 	
-	@ManyToOne
-	@JoinColumn(name = "country_id")
-	private Country country;
+	@JsonIgnore
+	@OneToMany(mappedBy = "country")
+	private List<Company> companies = new ArrayList<>();
 	
-	public Company() {
+	public Country() {
 	}
 
-	public Company(Integer id, String name, String shortName, 
-			Date foundationDate, Country country) {
+	public Country(Integer id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.shortName = shortName;
-		this.foundationDate = foundationDate;
-		this.country = country;
 	}
 
 	public Integer getId() {
@@ -55,28 +51,12 @@ public class Company implements Serializable {
 		this.name = name;
 	}
 
-	public String getShortName() {
-		return shortName;
+	public List<Company> getCompanies() {
+		return companies;
 	}
 
-	public void setShortName(String shortName) {
-		this.shortName = shortName;
-	}
-
-	public Date getFoundationDate() {
-		return foundationDate;
-	}
-
-	public void setFoundationDate(Date foundationDate) {
-		this.foundationDate = foundationDate;
-	}
-
-	public Country getCountry() {
-		return country;
-	}
-
-	public void setCountry(Country country) {
-		this.country = country;
+	public void setCompanies(List<Company> companies) {
+		this.companies = companies;
 	}
 
 	@Override
@@ -92,7 +72,7 @@ public class Company implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Company other = (Company) obj;
+		Country other = (Country) obj;
 		return Objects.equals(id, other.id);
 	}
 	
