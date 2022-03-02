@@ -1,7 +1,9 @@
 package br.com.coelhovictor.springapibase.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Company implements Serializable {
@@ -25,6 +28,9 @@ public class Company implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "country_id")
 	private Country country;
+	
+	@OneToMany(mappedBy = "company")
+	private List<Contract> contracts = new ArrayList<>();
 	
 	public Company() {
 	}
@@ -77,6 +83,22 @@ public class Company implements Serializable {
 
 	public void setCountry(Country country) {
 		this.country = country;
+	}
+
+	public List<Contract> getContracts() {
+		return contracts;
+	}
+
+	public void setContracts(List<Contract> contracts) {
+		this.contracts = contracts;
+	}
+	
+	public Double getContractsTotalValue() {
+		double totalValue = 0;
+		for(Contract con : this.contracts) {
+			totalValue += con.getValue();
+		}
+		return totalValue;
 	}
 
 	@Override
