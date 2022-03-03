@@ -16,6 +16,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.coelhovictor.springapibase.domain.enums.Role;
 
 @Entity
@@ -31,6 +33,10 @@ public class User implements Serializable {
 	
 	@Column(unique=true)
 	private String email;
+	
+	@JsonIgnore
+	private String password;
+	
 	private Date birthday;
 	private Date createdAt;
 	
@@ -41,11 +47,13 @@ public class User implements Serializable {
 	public User() {
 	}
 
-	public User(Integer id, String username, String email, Date birthday, Date createdAt) {
+	public User(Integer id, String username, String email, String password, 
+			Date birthday, Date createdAt) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.email = email;
+		this.password = password;
 		this.birthday = birthday;
 		this.createdAt = createdAt;
 	}
@@ -72,6 +80,14 @@ public class User implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public Date getBirthday() {

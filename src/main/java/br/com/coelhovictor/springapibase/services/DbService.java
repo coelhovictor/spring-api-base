@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.coelhovictor.springapibase.domain.Address;
@@ -24,6 +25,9 @@ import br.com.coelhovictor.springapibase.repositories.UserRepository;
 @Service
 public class DbService {
 
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
 	@Autowired
 	private CompanyRepository companyRepository;
 	
@@ -91,9 +95,11 @@ public class DbService {
 		contractRepository.saveAll(Arrays.asList(cct1, cct2, cct3));
 		
 		User u1 = new User(null, "coelhovictor", "coelho.victor@email.com", 
-				dateFormat.parse("08/04/2001"), new Date(System.currentTimeMillis()));
+				passwordEncoder.encode("123"), dateFormat.parse("08/04/2001"), 
+				new Date(System.currentTimeMillis()));
 		User u2 = new User(null, "root", "root@email.com", 
-				dateFormat.parse("01/01/1999"), new Date(System.currentTimeMillis()));
+				passwordEncoder.encode("123"), dateFormat.parse("01/01/1999"), 
+				new Date(System.currentTimeMillis()));
 		u2.addRole(Role.ADMIN);
 		
 		userRepository.saveAll(Arrays.asList(u1, u2));
