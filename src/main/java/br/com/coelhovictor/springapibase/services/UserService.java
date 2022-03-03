@@ -33,6 +33,14 @@ public class UserService {
 			new NotFoundException("User", id));
 	}
 	
+	public User findByEmail(String email) {
+		User user = repository.findByEmailIgnoreCase(email);
+		if(user == null)
+			throw new NotFoundException("User", email);
+		
+		return user;
+	}
+	
 	public Page<User> findAll(Integer page, Integer linesPerPage,
 			String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, 

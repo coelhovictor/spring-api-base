@@ -36,6 +36,12 @@ public class UserController {
 	public ResponseEntity<User> find(@PathVariable Integer id) {
 		return ResponseEntity.ok(service.findById(id));
 	}
+	
+	@GetMapping(value = "/email")
+	public ResponseEntity<User> find(@RequestParam(value = "value")
+			String email) {
+		return ResponseEntity.ok(service.findByEmail(email));
+	}
 
 	@GetMapping()
 	public ResponseEntity<Page<User>> findPage(
