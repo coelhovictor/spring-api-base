@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -38,17 +40,22 @@ public class Company implements Serializable {
 	@OneToMany(mappedBy = "company")
 	private List<Contract> contracts = new ArrayList<>();
 	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "address_id")
+	private Address address;
+	
 	public Company() {
 	}
 
 	public Company(Integer id, String name, String shortName, 
-			Date foundationDate, Country country) {
+			Date foundationDate, Country country, Address address) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.shortName = shortName;
 		this.foundationDate = foundationDate;
 		this.country = country;
+		this.address = address;
 	}
 
 	public Integer getId() {
@@ -99,6 +106,14 @@ public class Company implements Serializable {
 		this.contracts = contracts;
 	}
 	
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
 	public Double getContractsTotalValue() {
 		double totalValue = 0;
 		for(Contract con : this.contracts) {
