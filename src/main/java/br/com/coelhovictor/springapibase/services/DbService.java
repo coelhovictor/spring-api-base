@@ -94,10 +94,10 @@ public class DbService {
 		
 		contractRepository.saveAll(Arrays.asList(cct1, cct2, cct3));
 		
-		User u1 = new User(null, "coelhovictor", "coelho.victor@email.com", 
-				passwordEncoder.encode("123"), dateFormat.parse("08/04/2001"), 
-				new Date(System.currentTimeMillis()));
-		User u2 = new User(null, "root", "root@email.com", 
+		User u1 = new User(null, "Victor Coelho", "coelhovictor", 
+				"coelho.victor@email.com",  passwordEncoder.encode("123"), 
+				dateFormat.parse("08/04/2001"),  new Date(System.currentTimeMillis()));
+		User u2 = new User(null, "Root Toor", "root", "root@email.com", 
 				passwordEncoder.encode("123"), dateFormat.parse("01/01/1999"), 
 				new Date(System.currentTimeMillis()));
 		u2.addRole(Role.ADMIN);

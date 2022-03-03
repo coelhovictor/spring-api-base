@@ -35,7 +35,7 @@ public class UserService {
 	}
 	
 	public User fromDTO(UserDTO objDTO) {
-		return new User(null, objDTO.getUsername(), objDTO.getEmail(),
+		return new User(null, objDTO.getName(), objDTO.getUsername(), objDTO.getEmail(),
 				passwordEncoder.encode(objDTO.getPassword()), objDTO.getBirthday(),
 				new Date(System.currentTimeMillis()));
 	}

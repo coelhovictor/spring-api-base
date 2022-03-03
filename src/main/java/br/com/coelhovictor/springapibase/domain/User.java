@@ -33,6 +33,8 @@ public class User implements UserDetails, Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	private String name;
+	
 	@Column(unique=true)
 	private String username;
 	
@@ -52,10 +54,12 @@ public class User implements UserDetails, Serializable {
 	public User() {
 	}
 
-	public User(Integer id, String username, String email, String password, 
+	public User(Integer id, String name, 
+			String username, String email, String password, 
 			Date birthday, Date createdAt) {
 		super();
 		this.id = id;
+		this.name = name;
 		this.username = username;
 		this.email = email;
 		this.password = password;
@@ -69,6 +73,14 @@ public class User implements UserDetails, Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override
