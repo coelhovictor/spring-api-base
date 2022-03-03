@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -16,6 +17,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import br.com.coelhovictor.springapibase.security.JWTAuthenticationFilter;
+import br.com.coelhovictor.springapibase.security.JWTUtil;
+import br.com.coelhovictor.springapibase.services.UserService;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -23,6 +28,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private Environment env;
 
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private JWTUtil jwtUtil;
+	
 	private static final String[] PUBLIC = {
 			"/h2-console/**"
 	};
@@ -45,10 +56,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(PUBLIC).permitAll()
 			.antMatchers(HttpMethod.GET, PUBLIC_GET).permitAll()
 			.anyRequest().authenticated();
+		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		http.sessionManagement().sessionCreationPolicy(
 				SessionCreationPolicy.STATELESS);
 	}
 
+	@Override
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userService)
+			.passwordEncoder(bCryptPasswordEncoder());
+	}
+	
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
