@@ -3,6 +3,7 @@ package br.com.coelhovictor.springapibase.controllers.exceptions;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.UnexpectedTypeException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,6 +67,16 @@ public class ResponseExceptionHandler {
 	
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	public ResponseEntity<ErrorResponse> methodArgument(MethodArgumentTypeMismatchException e, 
+			HttpServletRequest request) {
+		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+		ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()), 
+				httpStatus.value(), httpStatus.getReasonPhrase(), "", 
+				request.getRequestURI());
+		return ResponseEntity.status(httpStatus).body(error);
+	}
+	
+	@ExceptionHandler(UnexpectedTypeException.class)
+	public ResponseEntity<ErrorResponse> unexpectedType(UnexpectedTypeException e, 
 			HttpServletRequest request) {
 		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 		ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()), 

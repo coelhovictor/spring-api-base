@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import br.com.coelhovictor.springapibase.domain.Address;
 import br.com.coelhovictor.springapibase.domain.Company;
 import br.com.coelhovictor.springapibase.dtos.CompanyDTO;
 import br.com.coelhovictor.springapibase.repositories.CompanyRepository;
@@ -21,6 +22,9 @@ public class CompanyService {
 	
 	@Autowired
 	private CountryService countryService;
+	
+	@Autowired
+	private AddressService addressService;
 
 	public Company findById(Integer id) {
 		return repository.findById(id).orElseThrow(() -> 
@@ -36,6 +40,8 @@ public class CompanyService {
 	
 	public void insert(Company obj) {
 		obj.setId(null);
+		obj.getAddress().setCompany(obj);
+		
 		repository.save(obj);
 	}
 
@@ -56,9 +62,12 @@ public class CompanyService {
 	}
 	
 	public Company fromDTO(CompanyDTO objDTO) {
+		Address address = addressService.fromDTO(objDTO.getAddress());
+		address.setId(null);
+		
 		return new Company(null, objDTO.getName(), objDTO.getName(), 
 				objDTO.getFoundationDate(), 
-				countryService.findById(objDTO.getCountryId()), null);
+				countryService.findById(objDTO.getCountryId()), address);
 	}
 	
 	private void updateData(Company newObj, Company obj) {
@@ -66,6 +75,7 @@ public class CompanyService {
 		newObj.setShortName(obj.getShortName());
 		newObj.setFoundationDate(obj.getFoundationDate());
 		newObj.setCountry(obj.getCountry());
+		newObj.setAddress(obj.getAddress());
 	}
 	
 }

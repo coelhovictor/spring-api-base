@@ -3,6 +3,7 @@ package br.com.coelhovictor.springapibase.dtos;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -35,6 +36,10 @@ public class CompanyDTO implements Serializable {
 	
 	@NotNull(message = "Required field")
 	private Integer countryId;
+	
+	@NotNull(message = "Required field")
+	@Valid
+	private AddressDTO address;
 	
 	public CompanyDTO() {
 	}
@@ -85,6 +90,14 @@ public class CompanyDTO implements Serializable {
 
 	public void setCountryId(Integer countryId) {
 		this.countryId = countryId;
+	}
+
+	public AddressDTO getAddress() {
+		return address;
+	}
+
+	public void setAddress(AddressDTO address) {
+		this.address = address;
 	}
 
 }

@@ -2,15 +2,36 @@ package br.com.coelhovictor.springapibase.dtos;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.coelhovictor.springapibase.domain.Address;
 
 public class AddressDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@JsonIgnore
 	private Integer id;
+	
+	@NotEmpty(message = "Required field")
+	@Length(min = 5, max = 50, message = "The length must be "
+			+ "between 5 and 50 characters")
 	private String name;
+	
+	@NotEmpty(message = "Required field")
+	@Length(min = 5, max = 50, message = "The length must be "
+			+ "between 5 and 50 characters")
 	private String city;
+	
+	@Length(max = 50, message = "The range has a maximum "
+			+ "of 50 characters")
 	private String state;
+	
+	@NotNull(message = "Required field")
 	private Integer zip;
 	
 	public AddressDTO() {
