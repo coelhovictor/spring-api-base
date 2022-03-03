@@ -44,11 +44,16 @@ public class Company implements Serializable {
 	@JoinColumn(name = "address_id")
 	private Address address;
 	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "owner_id")
+	private Owner owner;
+	
 	public Company() {
 	}
 
 	public Company(Integer id, String name, String shortName, 
-			Date foundationDate, Country country, Address address) {
+			Date foundationDate, Country country, Address address, 
+			Owner owner) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -56,6 +61,7 @@ public class Company implements Serializable {
 		this.foundationDate = foundationDate;
 		this.country = country;
 		this.address = address;
+		this.owner = owner;
 	}
 
 	public Integer getId() {
@@ -112,6 +118,14 @@ public class Company implements Serializable {
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+
+	public Owner getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Owner owner) {
+		this.owner = owner;
 	}
 
 	public Double getContractsTotalValue() {

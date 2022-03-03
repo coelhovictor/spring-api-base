@@ -11,6 +11,7 @@ import br.com.coelhovictor.springapibase.domain.Address;
 import br.com.coelhovictor.springapibase.domain.Company;
 import br.com.coelhovictor.springapibase.domain.Contract;
 import br.com.coelhovictor.springapibase.domain.Country;
+import br.com.coelhovictor.springapibase.domain.Owner;
 import br.com.coelhovictor.springapibase.repositories.CompanyRepository;
 import br.com.coelhovictor.springapibase.repositories.ContractRepository;
 import br.com.coelhovictor.springapibase.repositories.CountryRepository;
@@ -42,10 +43,12 @@ public class DbService {
 		Address ad2 = new Address(null, "Av. República do Chile", 65, "Rio de Janeiro", 
 				"Rio de Janeiro", 20031912);
 		
+		Owner ow1 = new Owner(null, "Lucas von Cranach", null, ct5);
+		
 		Company co1 = new Company(null, "OneFootball GmbH", 
-				"OneFootball", dateFormat.parse("02/10/2008"), ct5, ad1);
+				"OneFootball", dateFormat.parse("02/10/2008"), ct5, ad1, ow1);
 		Company co2 = new Company(null, "Petróleo Brasileiro S.A.", 
-				"Petrobras", dateFormat.parse("03/10/1953"), ct1, ad2);
+				"Petrobras", dateFormat.parse("03/10/1953"), ct1, ad2, null);
 		
 		ad1.setCompany(co1);
 		ad2.setCompany(co2);

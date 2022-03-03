@@ -67,7 +67,7 @@ public class CompanyService {
 		
 		return new Company(null, objDTO.getName(), objDTO.getName(), 
 				objDTO.getFoundationDate(), 
-				countryService.findById(objDTO.getCountryId()), address);
+				countryService.findById(objDTO.getCountryId()), address, null);
 	}
 	
 	private void updateData(Company newObj, Company obj) {
