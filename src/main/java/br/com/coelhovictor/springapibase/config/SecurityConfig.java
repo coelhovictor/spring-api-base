@@ -21,7 +21,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import br.com.coelhovictor.springapibase.security.JWTAuthenticationFilter;
 import br.com.coelhovictor.springapibase.security.JWTAuthorizationFilter;
 import br.com.coelhovictor.springapibase.security.JWTUtil;
-import br.com.coelhovictor.springapibase.services.UserService;
+import br.com.coelhovictor.springapibase.services.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private Environment env;
 
 	@Autowired
-	private UserService userService;
+	private UserDetailsServiceImpl userDetailsService;
 
 	@Autowired
 	private JWTUtil jwtUtil;
@@ -47,6 +47,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			"/country/**",
 			"/owners/**",
 	};
+	
+	private static final String[] PUBLIC_POST = {
+			"/register/**"
+	};
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -58,17 +62,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.antMatchers(PUBLIC).permitAll()
 			.antMatchers(HttpMethod.GET, PUBLIC_GET).permitAll()
+			.antMatchers(HttpMethod.POST, PUBLIC_POST).permitAll()
 			.anyRequest().authenticated();
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, 
-				userService));
+				userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(
 				SessionCreationPolicy.STATELESS);
 	}
 
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userService)
+		auth.userDetailsService(userDetailsService)
 			.passwordEncoder(bCryptPasswordEncoder());
 	}
 	

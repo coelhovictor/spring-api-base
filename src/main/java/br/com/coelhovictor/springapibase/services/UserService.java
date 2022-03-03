@@ -1,29 +1,43 @@
 package br.com.coelhovictor.springapibase.services;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.coelhovictor.springapibase.domain.User;
+import br.com.coelhovictor.springapibase.dtos.UserDTO;
 import br.com.coelhovictor.springapibase.repositories.UserRepository;
+import br.com.coelhovictor.springapibase.services.exceptions.ConflictException;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
 
 	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
 	private UserRepository repository;
-
-	@Override
-	public UserDetails loadUserByUsername(String username) 
-			throws UsernameNotFoundException {
-		User user = repository.findByUsername(username);
-		if(user == null) 
-			throw new UsernameNotFoundException(username);
-
-		return user;
+	
+	public void register(User obj) {
+		if(authenticated() != null) 
+			throw new ConflictException("You are already "
+					+ "authenticated with a user");
+		
+		insert(obj);
+	}
+	
+	public void insert(User obj) {
+		obj.setId(null);
+		repository.save(obj);
+	}
+	
+	public User fromDTO(UserDTO objDTO) {
+		return new User(null, objDTO.getUsername(), objDTO.getEmail(),
+				passwordEncoder.encode(objDTO.getPassword()), objDTO.getBirthday(),
+				new Date(System.currentTimeMillis()));
 	}
 	
 	public static User authenticated() {

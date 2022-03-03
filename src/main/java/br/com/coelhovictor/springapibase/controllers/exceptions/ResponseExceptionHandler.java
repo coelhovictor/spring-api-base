@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import br.com.coelhovictor.springapibase.services.exceptions.ConflictException;
 import br.com.coelhovictor.springapibase.services.exceptions.DataIntegrityException;
 import br.com.coelhovictor.springapibase.services.exceptions.NotFoundException;
 
@@ -81,6 +82,16 @@ public class ResponseExceptionHandler {
 		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 		ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()), 
 				httpStatus.value(), httpStatus.getReasonPhrase(), "", 
+				request.getRequestURI());
+		return ResponseEntity.status(httpStatus).body(error);
+	}
+	
+	@ExceptionHandler(ConflictException.class)
+	public ResponseEntity<ErrorResponse> unexpectedType(ConflictException e, 
+			HttpServletRequest request) {
+		HttpStatus httpStatus = HttpStatus.CONFLICT;
+		ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()), 
+				httpStatus.value(), httpStatus.getReasonPhrase(), e.getMessage(), 
 				request.getRequestURI());
 		return ResponseEntity.status(httpStatus).body(error);
 	}
