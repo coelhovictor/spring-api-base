@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -25,6 +26,8 @@ public class Company implements Serializable {
 	private Integer id;
 	private String name;
 	private String shortName;
+	
+	@JsonFormat(pattern = "MM/dd/yyyy")
 	private Date foundationDate;
 	
 	@ManyToOne

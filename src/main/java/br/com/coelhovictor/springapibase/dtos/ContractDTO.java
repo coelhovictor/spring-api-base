@@ -10,17 +10,19 @@ import org.hibernate.validator.constraints.Range;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.coelhovictor.springapibase.domain.Contract;
+import br.com.coelhovictor.springapibase.services.validation.ContractValid;
 
+@ContractValid
 public class ContractDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
 	
-	@JsonFormat(pattern = "MM/dd/yyyy HH:mm")
+	@JsonFormat(pattern = "MM/dd/yyyy")
 	@NotNull(message = "Required field")
 	private Date startDate;
 	
-	@JsonFormat(pattern = "MM/dd/yyyy HH:mm")
+	@JsonFormat(pattern = "MM/dd/yyyy")
 	private Date endDate;
 	
 	@Range(min = 100, max = 100000000, message = "The range must be "

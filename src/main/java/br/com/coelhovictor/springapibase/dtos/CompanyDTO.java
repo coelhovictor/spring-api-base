@@ -11,7 +11,9 @@ import org.hibernate.validator.constraints.Length;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.coelhovictor.springapibase.domain.Company;
+import br.com.coelhovictor.springapibase.services.validation.CompanyValid;
 
+@CompanyValid
 public class CompanyDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -27,7 +29,7 @@ public class CompanyDTO implements Serializable {
 			+ "between 3 and 30 characters")
 	private String shortName;
 	
-	@JsonFormat(pattern = "MM/dd/yyyy HH:mm")
+	@JsonFormat(pattern = "MM/dd/yyyy")
 	@NotNull(message = "Required field")
 	private Date foundationDate;
 	

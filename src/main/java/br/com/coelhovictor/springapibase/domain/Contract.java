@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 public class Contract implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -18,7 +20,11 @@ public class Contract implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
+	@JsonFormat(pattern = "MM/dd/yyyy")
 	private Date startDate;
+	
+	@JsonFormat(pattern = "MM/dd/yyyy")
 	private Date endDate;
 	private Double value;
 	

@@ -56,9 +56,9 @@ public class ResponseExceptionHandler {
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<ErrorResponse> messageNotReadable(HttpMessageNotReadableException e, 
 			HttpServletRequest request) {
-		HttpStatus httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 		ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()), 
-				httpStatus.value(), httpStatus.getReasonPhrase(), e.getMessage(), 
+				httpStatus.value(), httpStatus.getReasonPhrase(), "", 
 				request.getRequestURI());
 		return ResponseEntity.status(httpStatus).body(error);
 	}
