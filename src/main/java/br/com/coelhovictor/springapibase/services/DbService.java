@@ -37,9 +37,9 @@ public class DbService {
 		Country ct4 = new Country(null, "Portugal");
 		Country ct5 = new Country(null, "Germany");
 		
-		Address ad1 = new Address(null, "Greifswalder Straße 212", "Belin", "",
+		Address ad1 = new Address(null, "Greifswalder Straße", 212, "Belin", "",
 				10405);
-		Address ad2 = new Address(null, "Av. República do Chile 65", "Rio de Janeiro", 
+		Address ad2 = new Address(null, "Av. República do Chile", 65, "Rio de Janeiro", 
 				"Rio de Janeiro", 20031912);
 		
 		Company co1 = new Company(null, "OneFootball GmbH", 

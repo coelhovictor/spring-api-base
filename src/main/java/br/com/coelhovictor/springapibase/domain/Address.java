@@ -19,6 +19,7 @@ public class Address implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
+	private Integer number;
 	private String city;
 	private String state;
 	private Integer zip;
@@ -30,11 +31,12 @@ public class Address implements Serializable {
 	public Address() {
 	}
 
-	public Address(Integer id, String name, String city, 
+	public Address(Integer id, String name, Integer number, String city, 
 			String state, Integer zip) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.number = number;
 		this.city = city;
 		this.state = state;
 		this.zip = zip;
@@ -55,6 +57,14 @@ public class Address implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Integer getNumber() {
+		return number;
+	}
+
+	public void setNumber(Integer number) {
+		this.number = number;
 	}
 
 	public String getCity() {

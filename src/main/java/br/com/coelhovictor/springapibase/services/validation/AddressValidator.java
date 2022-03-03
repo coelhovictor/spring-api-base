@@ -30,6 +30,16 @@ public class AddressValidator implements
 			list.add(new FieldMessage("zip", "The range must be "
 					+ "between 5 and 9 characters"));
 		
+		int number = objDTO.getNumber();
+		String numberStr = number + "";
+		
+		if(number < 0 || number > 99999)
+			list.add(new FieldMessage("number", "Invalid value"));
+		
+		if(numberStr.length() > 5)
+			list.add(new FieldMessage("number", "The range must be "
+					+ "between 1 and 5 characters"));
+		
 		for(FieldMessage fieldMessage : list) {
 			context.disableDefaultConstraintViolation();
 			context.buildConstraintViolationWithTemplate(fieldMessage.getMessage())

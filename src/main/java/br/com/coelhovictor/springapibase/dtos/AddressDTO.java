@@ -24,6 +24,9 @@ public class AddressDTO implements Serializable {
 			+ "between 5 and 50 characters")
 	private String name;
 	
+	@NotNull(message = "Required field")
+	private Integer number;
+	
 	@NotEmpty(message = "Required field")
 	@Length(min = 5, max = 50, message = "The length must be "
 			+ "between 5 and 50 characters")
@@ -42,6 +45,7 @@ public class AddressDTO implements Serializable {
 	public AddressDTO(Address obj) {
 		this.id = obj.getId();
 		this.name = obj.getName();
+		this.number = obj.getNumber();
 		this.city = obj.getCity();
 		this.state = obj.getState();
 		this.zip = obj.getZip();
@@ -61,6 +65,14 @@ public class AddressDTO implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Integer getNumber() {
+		return number;
+	}
+
+	public void setNumber(Integer number) {
+		this.number = number;
 	}
 
 	public String getCity() {

@@ -9,8 +9,8 @@ import br.com.coelhovictor.springapibase.dtos.AddressDTO;
 public class AddressService {
 
 	public Address fromDTO(AddressDTO objDTO) {
-		return new Address(objDTO.getId(), objDTO.getName(), objDTO.getCity(),
-				objDTO.getState(), objDTO.getZip());
+		return new Address(objDTO.getId(), objDTO.getName(), objDTO.getNumber(), 
+				objDTO.getCity(), objDTO.getState(), objDTO.getZip());
 	}
 	
 }
