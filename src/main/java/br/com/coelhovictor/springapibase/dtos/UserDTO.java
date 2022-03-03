@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.coelhovictor.springapibase.domain.User;
+import br.com.coelhovictor.springapibase.services.validation.UserValid;
 
+@UserValid
 public class UserDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 

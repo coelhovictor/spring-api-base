@@ -8,6 +8,8 @@ import br.com.coelhovictor.springapibase.domain.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 	
-	User findByUsername(String username);
+	User findByUsernameIgnoreCase(String username);
+	
+	User findByEmailIgnoreCase(String email);
 	
 }
