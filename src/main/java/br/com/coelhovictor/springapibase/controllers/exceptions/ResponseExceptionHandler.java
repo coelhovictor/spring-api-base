@@ -11,6 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import br.com.coelhovictor.springapibase.services.exceptions.DataIntegrityException;
 import br.com.coelhovictor.springapibase.services.exceptions.NotFoundException;
@@ -55,6 +56,16 @@ public class ResponseExceptionHandler {
 	
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<ErrorResponse> messageNotReadable(HttpMessageNotReadableException e, 
+			HttpServletRequest request) {
+		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+		ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()), 
+				httpStatus.value(), httpStatus.getReasonPhrase(), "", 
+				request.getRequestURI());
+		return ResponseEntity.status(httpStatus).body(error);
+	}
+	
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	public ResponseEntity<ErrorResponse> methodArgument(MethodArgumentTypeMismatchException e, 
 			HttpServletRequest request) {
 		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 		ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()), 
