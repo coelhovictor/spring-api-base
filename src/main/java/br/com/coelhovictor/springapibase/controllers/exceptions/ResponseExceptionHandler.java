@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -46,6 +47,16 @@ public class ResponseExceptionHandler {
 	public ResponseEntity<ErrorResponse> dataIntegrity(DataIntegrityException e, 
 			HttpServletRequest request) {
 		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+		ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()), 
+				httpStatus.value(), httpStatus.getReasonPhrase(), e.getMessage(), 
+				request.getRequestURI());
+		return ResponseEntity.status(httpStatus).body(error);
+	}
+	
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<ErrorResponse> messageNotReadable(HttpMessageNotReadableException e, 
+			HttpServletRequest request) {
+		HttpStatus httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
 		ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()), 
 				httpStatus.value(), httpStatus.getReasonPhrase(), e.getMessage(), 
 				request.getRequestURI());
