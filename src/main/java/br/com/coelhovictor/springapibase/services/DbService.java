@@ -3,6 +3,7 @@ package br.com.coelhovictor.springapibase.services;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,13 @@ import br.com.coelhovictor.springapibase.domain.Company;
 import br.com.coelhovictor.springapibase.domain.Contract;
 import br.com.coelhovictor.springapibase.domain.Country;
 import br.com.coelhovictor.springapibase.domain.Owner;
+import br.com.coelhovictor.springapibase.domain.User;
+import br.com.coelhovictor.springapibase.domain.enums.Role;
 import br.com.coelhovictor.springapibase.repositories.CompanyRepository;
 import br.com.coelhovictor.springapibase.repositories.ContractRepository;
 import br.com.coelhovictor.springapibase.repositories.CountryRepository;
 import br.com.coelhovictor.springapibase.repositories.OwnerRepository;
+import br.com.coelhovictor.springapibase.repositories.UserRepository;
 
 @Service
 public class DbService {
@@ -31,6 +35,9 @@ public class DbService {
 	
 	@Autowired
 	private OwnerRepository ownerRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	public void instantiateTestDatabase() throws ParseException {
 		
@@ -82,6 +89,14 @@ public class DbService {
 		co2.getContracts().addAll(Arrays.asList(cct3));
 		
 		contractRepository.saveAll(Arrays.asList(cct1, cct2, cct3));
+		
+		User u1 = new User(null, "coelhovictor", "coelho.victor@email.com", 
+				dateFormat.parse("08/04/2001"), new Date(System.currentTimeMillis()));
+		User u2 = new User(null, "root", "root@email.com", 
+				dateFormat.parse("01/01/1999"), new Date(System.currentTimeMillis()));
+		u2.addRole(Role.ADMIN);
+		
+		userRepository.saveAll(Arrays.asList(u1, u2));
 		
 	}
 	
