@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.coelhovictor.springapibase.domain.Address;
 import br.com.coelhovictor.springapibase.domain.Company;
+import br.com.coelhovictor.springapibase.domain.Owner;
 import br.com.coelhovictor.springapibase.dtos.CompanyDTO;
 import br.com.coelhovictor.springapibase.repositories.CompanyRepository;
 import br.com.coelhovictor.springapibase.services.exceptions.DataIntegrityException;
@@ -39,6 +40,15 @@ public class CompanyService {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, 
 				Direction.valueOf(direction), orderBy);
 		return repository.findAll(pageRequest);
+	}
+	
+	public Page<Company> findByOwner(Integer ownerId, Integer page, 
+			Integer linesPerPage, String orderBy, String direction) {
+		Owner owner = ownerService.findById(ownerId);
+		
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, 
+				Direction.valueOf(direction), orderBy);
+		return repository.findByOwner(owner, pageRequest);
 	}
 	
 	public void insert(Company obj) {

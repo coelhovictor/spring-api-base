@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.coelhovictor.springapibase.domain.Company;
 import br.com.coelhovictor.springapibase.domain.Owner;
 import br.com.coelhovictor.springapibase.dtos.OwnerDTO;
+import br.com.coelhovictor.springapibase.services.CompanyService;
 import br.com.coelhovictor.springapibase.services.OwnerService;
 
 @RestController
@@ -28,6 +30,9 @@ public class OwnerController {
 
 	@Autowired
 	private OwnerService service;
+	
+	@Autowired
+	private CompanyService companyService;
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Owner> find(@PathVariable Integer id) {
@@ -41,6 +46,18 @@ public class OwnerController {
 			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy, 
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 		Page<Owner> list = service.findAll(page, linesPerPage, orderBy, direction);
+		return ResponseEntity.ok(list);
+	}
+	
+	@GetMapping("/{id}/companies")
+	public ResponseEntity<Page<Company>> findCompaniesPage(
+			@PathVariable Integer id,
+			@RequestParam(value = "page", defaultValue = "0") Integer page, 
+			@RequestParam(value = "linesPerPage", defaultValue = "5") Integer linesPerPage, 
+			@RequestParam(value = "orderBy", defaultValue = "foundationDate") String orderBy, 
+			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
+		Page<Company> list = companyService.findByOwner(id, page, linesPerPage, 
+				orderBy, direction);
 		return ResponseEntity.ok(list);
 	}
 
