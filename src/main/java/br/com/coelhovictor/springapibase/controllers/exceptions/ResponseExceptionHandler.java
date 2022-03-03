@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import br.com.coelhovictor.springapibase.services.exceptions.DataIntegrityException;
 import br.com.coelhovictor.springapibase.services.exceptions.NotFoundException;
 
 @ControllerAdvice
@@ -38,6 +39,16 @@ public class ResponseExceptionHandler {
 		for(FieldError fieldError : e.getBindingResult().getFieldErrors()) {
 			error.addError(fieldError.getField(), fieldError.getDefaultMessage());
 		}
+		return ResponseEntity.status(httpStatus).body(error);
+	}
+	
+	@ExceptionHandler(DataIntegrityException.class)
+	public ResponseEntity<ErrorResponse> dataIntegrity(DataIntegrityException e, 
+			HttpServletRequest request) {
+		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+		ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()), 
+				httpStatus.value(), httpStatus.getReasonPhrase(), e.getMessage(), 
+				request.getRequestURI());
 		return ResponseEntity.status(httpStatus).body(error);
 	}
 	
