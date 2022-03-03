@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import br.com.coelhovictor.springapibase.domain.Company;
 import br.com.coelhovictor.springapibase.domain.Contract;
 import br.com.coelhovictor.springapibase.dtos.ContractDTO;
 import br.com.coelhovictor.springapibase.repositories.ContractRepository;
@@ -32,6 +33,15 @@ public class ContractService {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, 
 				Direction.valueOf(direction), orderBy);
 		return repository.findAll(pageRequest);
+	}
+	
+	public Page<Contract> findByCompany(Integer companyId, Integer page, 
+			Integer linesPerPage, String orderBy, String direction) {
+		Company company = companyService.findById(companyId);
+		
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, 
+				Direction.valueOf(direction), orderBy);
+		return repository.findByCompany(company, pageRequest);
 	}
 	
 	public void insert(Contract obj) {

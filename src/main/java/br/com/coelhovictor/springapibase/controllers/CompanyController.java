@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.coelhovictor.springapibase.domain.Company;
+import br.com.coelhovictor.springapibase.domain.Contract;
 import br.com.coelhovictor.springapibase.dtos.CompanyDTO;
 import br.com.coelhovictor.springapibase.services.CompanyService;
+import br.com.coelhovictor.springapibase.services.ContractService;
 
 @RestController
 @RequestMapping(value = "/companies")
@@ -28,6 +30,9 @@ public class CompanyController {
 
 	@Autowired
 	private CompanyService service;
+	
+	@Autowired
+	private ContractService contractService;
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Company> find(@PathVariable Integer id) {
@@ -41,6 +46,18 @@ public class CompanyController {
 			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy, 
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 		Page<Company> list = service.findAll(page, linesPerPage, orderBy, direction);
+		return ResponseEntity.ok(list);
+	}
+	
+	@GetMapping("/{id}/contracts")
+	public ResponseEntity<Page<Contract>> findContractsPage(
+			@PathVariable Integer id,
+			@RequestParam(value = "page", defaultValue = "0") Integer page, 
+			@RequestParam(value = "linesPerPage", defaultValue = "5") Integer linesPerPage, 
+			@RequestParam(value = "orderBy", defaultValue = "startDate") String orderBy, 
+			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
+		Page<Contract> list = contractService.findByCompany(id, page, linesPerPage, 
+				orderBy, direction);
 		return ResponseEntity.ok(list);
 	}
 	
