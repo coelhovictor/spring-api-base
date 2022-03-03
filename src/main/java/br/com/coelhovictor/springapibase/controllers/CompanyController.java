@@ -33,14 +33,13 @@ public class CompanyController {
 	}
 	
 	@GetMapping()
-	public ResponseEntity<Page<CompanyDTO>> findPage(
+	public ResponseEntity<Page<Company>> findPage(
 			@RequestParam(value = "page", defaultValue = "0") Integer page, 
 			@RequestParam(value = "linesPerPage", defaultValue = "5") Integer linesPerPage, 
 			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy, 
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 		Page<Company> list = service.findAll(page, linesPerPage, orderBy, direction);
-		Page<CompanyDTO> listDto = list.map(obj -> new CompanyDTO(obj));
-		return ResponseEntity.ok(listDto);
+		return ResponseEntity.ok(list);
 	}
 	
 	@PostMapping()

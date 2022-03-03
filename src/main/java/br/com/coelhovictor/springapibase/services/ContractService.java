@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.com.coelhovictor.springapibase.domain.Contract;
+import br.com.coelhovictor.springapibase.dtos.ContractDTO;
 import br.com.coelhovictor.springapibase.repositories.ContractRepository;
 import br.com.coelhovictor.springapibase.services.exceptions.NotFoundException;
 
@@ -15,6 +16,9 @@ public class ContractService {
 
 	@Autowired
 	private ContractRepository repository;
+	
+	@Autowired
+	private CompanyService companyService;
 
 	public Contract findById(Integer id) {
 		return repository.findById(id).orElseThrow(() -> 
@@ -26,6 +30,17 @@ public class ContractService {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, 
 				Direction.valueOf(direction), orderBy);
 		return repository.findAll(pageRequest);
+	}
+	
+	public void insert(Contract obj) {
+		obj.setId(null);
+		repository.save(obj);
+	}
+
+	public Contract fromDTO(ContractDTO objDTO) {
+		return new Contract(objDTO.getId(), objDTO.getStartDate(), 
+				objDTO.getEndDate(), objDTO.getValue(), 
+				companyService.findById(objDTO.getCompanyId()));
 	}
 	
 }

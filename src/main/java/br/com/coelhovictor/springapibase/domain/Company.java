@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Company implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -29,6 +31,7 @@ public class Company implements Serializable {
 	@JoinColumn(name = "country_id")
 	private Country country;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "company")
 	private List<Contract> contracts = new ArrayList<>();
 	

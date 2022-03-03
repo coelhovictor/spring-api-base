@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -27,8 +28,10 @@ public class CompanyDTO implements Serializable {
 	private String shortName;
 	
 	@JsonFormat(pattern = "MM/dd/yyyy HH:mm")
+	@NotNull(message = "Required field")
 	private Date foundationDate;
 	
+	@NotNull(message = "Required field")
 	private Integer countryId;
 	
 	public CompanyDTO() {

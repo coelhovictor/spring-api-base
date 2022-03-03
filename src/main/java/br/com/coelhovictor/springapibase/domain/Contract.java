@@ -11,8 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 public class Contract implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -24,7 +22,6 @@ public class Contract implements Serializable {
 	private Date endDate;
 	private Double value;
 	
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "company_id")
 	private Company company;
