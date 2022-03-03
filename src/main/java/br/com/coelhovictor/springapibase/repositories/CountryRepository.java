@@ -8,4 +8,6 @@ import br.com.coelhovictor.springapibase.domain.Country;
 @Repository
 public interface CountryRepository extends JpaRepository<Country, Integer> {
 
+	Country findByNameIgnoreCase(String name);
+	
 }
