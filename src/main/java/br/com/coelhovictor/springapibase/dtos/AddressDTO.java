@@ -10,7 +10,9 @@ import org.hibernate.validator.constraints.Length;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.coelhovictor.springapibase.domain.Address;
+import br.com.coelhovictor.springapibase.services.validation.AddressValid;
 
+@AddressValid
 public class AddressDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
