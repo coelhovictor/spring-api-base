@@ -1,7 +1,6 @@
 package br.com.coelhovictor.springapibase.controllers.exceptions;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ValidationErrorResponse extends ErrorResponse {
@@ -9,7 +8,7 @@ public class ValidationErrorResponse extends ErrorResponse {
 
 	private List<FieldMessage> errors = new ArrayList<>();
 
-	public ValidationErrorResponse(Date timestamp, Integer status, String error, 
+	public ValidationErrorResponse(Long timestamp, Integer status, String error, 
 			String message, String path) {
 		super(timestamp, status, error, message, path);
 	}

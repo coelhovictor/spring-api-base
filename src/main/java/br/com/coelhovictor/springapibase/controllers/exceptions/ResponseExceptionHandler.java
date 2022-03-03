@@ -1,7 +1,5 @@
 package br.com.coelhovictor.springapibase.controllers.exceptions;
 
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.UnexpectedTypeException;
 
@@ -25,7 +23,7 @@ public class ResponseExceptionHandler {
 	public ResponseEntity<ErrorResponse> notFound(NotFoundException e, 
 			HttpServletRequest request) {
 		HttpStatus httpStatus = HttpStatus.NOT_FOUND;
-		ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()), 
+		ErrorResponse error = new ErrorResponse(System.currentTimeMillis(), 
 				httpStatus.value(), httpStatus.getReasonPhrase(), e.getMessage(), 
 				request.getRequestURI());
 		return ResponseEntity.status(httpStatus).body(error);
@@ -36,8 +34,8 @@ public class ResponseExceptionHandler {
 			HttpServletRequest request) {
 		HttpStatus httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
 		ValidationErrorResponse error = new ValidationErrorResponse(
-				new Date(System.currentTimeMillis()), httpStatus.value(), 
-				httpStatus.getReasonPhrase(), "", 
+				System.currentTimeMillis(), httpStatus.value(), 
+				httpStatus.getReasonPhrase(), e.getClass().getSimpleName(),
 				request.getRequestURI());
 		
 		for(FieldError fieldError : e.getBindingResult().getFieldErrors()) {
@@ -50,7 +48,7 @@ public class ResponseExceptionHandler {
 	public ResponseEntity<ErrorResponse> dataIntegrity(DataIntegrityException e, 
 			HttpServletRequest request) {
 		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-		ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()), 
+		ErrorResponse error = new ErrorResponse(System.currentTimeMillis(), 
 				httpStatus.value(), httpStatus.getReasonPhrase(), e.getMessage(), 
 				request.getRequestURI());
 		return ResponseEntity.status(httpStatus).body(error);
@@ -60,9 +58,9 @@ public class ResponseExceptionHandler {
 	public ResponseEntity<ErrorResponse> messageNotReadable(HttpMessageNotReadableException e, 
 			HttpServletRequest request) {
 		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-		ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()), 
-				httpStatus.value(), httpStatus.getReasonPhrase(), "", 
-				request.getRequestURI());
+		ErrorResponse error = new ErrorResponse(System.currentTimeMillis(), 
+				httpStatus.value(), httpStatus.getReasonPhrase(), 
+				e.getClass().getSimpleName(), request.getRequestURI());
 		return ResponseEntity.status(httpStatus).body(error);
 	}
 	
@@ -70,9 +68,9 @@ public class ResponseExceptionHandler {
 	public ResponseEntity<ErrorResponse> methodArgument(MethodArgumentTypeMismatchException e, 
 			HttpServletRequest request) {
 		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-		ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()), 
-				httpStatus.value(), httpStatus.getReasonPhrase(), "", 
-				request.getRequestURI());
+		ErrorResponse error = new ErrorResponse(System.currentTimeMillis(), 
+				httpStatus.value(), httpStatus.getReasonPhrase(), 
+				e.getClass().getSimpleName(), request.getRequestURI());
 		return ResponseEntity.status(httpStatus).body(error);
 	}
 	
@@ -80,9 +78,9 @@ public class ResponseExceptionHandler {
 	public ResponseEntity<ErrorResponse> unexpectedType(UnexpectedTypeException e, 
 			HttpServletRequest request) {
 		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-		ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()), 
-				httpStatus.value(), httpStatus.getReasonPhrase(), "", 
-				request.getRequestURI());
+		ErrorResponse error = new ErrorResponse(System.currentTimeMillis(), 
+				httpStatus.value(), httpStatus.getReasonPhrase(), 
+				e.getClass().getSimpleName(), request.getRequestURI());
 		return ResponseEntity.status(httpStatus).body(error);
 	}
 	
@@ -90,9 +88,19 @@ public class ResponseExceptionHandler {
 	public ResponseEntity<ErrorResponse> unexpectedType(ConflictException e, 
 			HttpServletRequest request) {
 		HttpStatus httpStatus = HttpStatus.CONFLICT;
-		ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()), 
+		ErrorResponse error = new ErrorResponse(System.currentTimeMillis(), 
 				httpStatus.value(), httpStatus.getReasonPhrase(), e.getMessage(), 
 				request.getRequestURI());
+		return ResponseEntity.status(httpStatus).body(error);
+	}
+	
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ErrorResponse> unexpectedType(Exception e, 
+			HttpServletRequest request) {
+		HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+		ErrorResponse error = new ErrorResponse(System.currentTimeMillis(), 
+				httpStatus.value(), httpStatus.getReasonPhrase(), 
+				e.getClass().getSimpleName(), request.getRequestURI());
 		return ResponseEntity.status(httpStatus).body(error);
 	}
 	

@@ -21,6 +21,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.coelhovictor.springapibase.domain.enums.Role;
@@ -44,7 +45,10 @@ public class User implements UserDetails, Serializable {
 	@JsonIgnore
 	private String password;
 	
+	@JsonFormat(pattern = "MM/dd/yyyy")
 	private Date birthday;
+	
+	@JsonFormat(pattern = "MM/dd/yyyy")
 	private Date createdAt;
 	
 	@ElementCollection(fetch=FetchType.EAGER)
@@ -125,9 +129,13 @@ public class User implements UserDetails, Serializable {
 		this.createdAt = createdAt;
 	}
 	
-	@JsonIgnore
 	public Set<Role> getRoles() {
 		return roles.stream().map(x -> Role.toEnum(x))
+				.collect(Collectors.toSet());
+	}
+	
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles.stream().map(x -> x.getId())
 				.collect(Collectors.toSet());
 	}
 	
@@ -135,6 +143,7 @@ public class User implements UserDetails, Serializable {
 		this.roles.add(role.getId());
 	}
 	
+	@JsonIgnore
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return getRoles().stream().map(x -> 

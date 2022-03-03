@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.coelhovictor.springapibase.domain.User;
+import br.com.coelhovictor.springapibase.dtos.MeDTO;
 import br.com.coelhovictor.springapibase.dtos.RegisterDTO;
 import br.com.coelhovictor.springapibase.services.UserService;
 
@@ -23,8 +24,8 @@ public class AuthController {
 	private UserService service;
 	
 	@GetMapping("/me")
-	public ResponseEntity<User> me() {
-		return ResponseEntity.ok(UserService.authenticated());
+	public ResponseEntity<MeDTO> me() {
+		return ResponseEntity.ok(new MeDTO(UserService.authenticated()));
 	}
 	
 	@PostMapping("/register")
