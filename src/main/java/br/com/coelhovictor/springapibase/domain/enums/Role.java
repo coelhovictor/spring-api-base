@@ -32,4 +32,15 @@ public enum Role {
 		throw new IllegalArgumentException("Invalid id " + id);
 	}
 	
+	public static Role toEnum(String name) {
+		if(name == null)
+			return null;
+		
+		for(Role x : Role.values()) {
+			if(name.equals(x.toString()))
+				return x;
+		}
+		return null;
+	}
+	
 }
