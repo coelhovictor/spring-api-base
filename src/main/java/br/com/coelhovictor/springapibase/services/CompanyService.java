@@ -25,6 +25,9 @@ public class CompanyService {
 	
 	@Autowired
 	private AddressService addressService;
+	
+	@Autowired
+	private OwnerService ownerService;
 
 	public Company findById(Integer id) {
 		return repository.findById(id).orElseThrow(() -> 
@@ -67,7 +70,8 @@ public class CompanyService {
 		
 		return new Company(null, objDTO.getName(), objDTO.getName(), 
 				objDTO.getFoundationDate(), 
-				countryService.findById(objDTO.getCountryId()), address, null);
+				countryService.findById(objDTO.getCountryId()), address,
+				ownerService.findById(objDTO.getOwnerId()));
 	}
 	
 	private void updateData(Company newObj, Company obj) {
@@ -76,6 +80,7 @@ public class CompanyService {
 		newObj.setFoundationDate(obj.getFoundationDate());
 		newObj.setCountry(obj.getCountry());
 		newObj.setAddress(obj.getAddress());
+		newObj.setOwner(obj.getOwner());
 	}
 	
 }

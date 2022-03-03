@@ -44,7 +44,7 @@ public class Company implements Serializable {
 	@JoinColumn(name = "address_id")
 	private Address address;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "owner_id")
 	private Owner owner;
 	

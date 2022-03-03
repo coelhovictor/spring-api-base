@@ -40,6 +40,9 @@ public class CompanyDTO implements Serializable {
 	@NotNull(message = "Required field")
 	@Valid
 	private AddressDTO address;
+
+	@NotNull(message = "Required field")
+	private Integer ownerId;
 	
 	public CompanyDTO() {
 	}
@@ -50,6 +53,7 @@ public class CompanyDTO implements Serializable {
 		this.shortName = obj.getShortName();
 		this.foundationDate = obj.getFoundationDate();
 		this.countryId = obj.getCountry().getId();
+		this.ownerId = obj.getOwner().getId();
 	}
 
 	public Integer getId() {
@@ -98,6 +102,14 @@ public class CompanyDTO implements Serializable {
 
 	public void setAddress(AddressDTO address) {
 		this.address = address;
+	}
+
+	public Integer getOwnerId() {
+		return ownerId;
+	}
+
+	public void setOwnerId(Integer ownerId) {
+		this.ownerId = ownerId;
 	}
 
 }

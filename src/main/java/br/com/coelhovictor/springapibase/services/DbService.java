@@ -15,6 +15,7 @@ import br.com.coelhovictor.springapibase.domain.Owner;
 import br.com.coelhovictor.springapibase.repositories.CompanyRepository;
 import br.com.coelhovictor.springapibase.repositories.ContractRepository;
 import br.com.coelhovictor.springapibase.repositories.CountryRepository;
+import br.com.coelhovictor.springapibase.repositories.OwnerRepository;
 
 @Service
 public class DbService {
@@ -27,6 +28,9 @@ public class DbService {
 	
 	@Autowired
 	private ContractRepository contractRepository;
+	
+	@Autowired
+	private OwnerRepository ownerRepository;
 	
 	public void instantiateTestDatabase() throws ParseException {
 		
@@ -53,10 +57,13 @@ public class DbService {
 		ad1.setCompany(co1);
 		ad2.setCompany(co2);
 		
+		ow1.setCompanies(Arrays.asList(co1));
+		
 		ct5.getCompanies().addAll(Arrays.asList(co1));
 		ct1.getCompanies().addAll(Arrays.asList(co2));
 		
 		countryRepository.saveAll(Arrays.asList(ct1, ct2, ct3, ct4, ct5));
+		ownerRepository.saveAll(Arrays.asList(ow1));
 		companyRepository.saveAll(Arrays.asList(co1, co2));
 		
 		Contract cct1 = new Contract(null, dateFormat.parse("04/10/1992"), 
