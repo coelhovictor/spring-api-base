@@ -79,6 +79,7 @@ public class CompanyService {
 		newObj.setShortName(obj.getShortName());
 		newObj.setFoundationDate(obj.getFoundationDate());
 		newObj.setCountry(obj.getCountry());
+		obj.getAddress().setId(newObj.getId());
 		newObj.setAddress(obj.getAddress());
 		newObj.setOwner(obj.getOwner());
 	}

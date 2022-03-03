@@ -3,7 +3,6 @@ package br.com.coelhovictor.springapibase.dtos;
 import java.io.Serializable;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -24,7 +23,6 @@ public class AddressDTO implements Serializable {
 			+ "between 5 and 50 characters")
 	private String name;
 	
-	@NotNull(message = "Required field")
 	private Integer number;
 	
 	@NotEmpty(message = "Required field")
@@ -36,7 +34,6 @@ public class AddressDTO implements Serializable {
 			+ "of 50 characters")
 	private String state;
 	
-	@NotNull(message = "Required field")
 	private Integer zip;
 	
 	public AddressDTO() {

@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -40,8 +41,8 @@ public class Company implements Serializable {
 	@OneToMany(mappedBy = "company")
 	private List<Contract> contracts = new ArrayList<>();
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "address_id")
+	@OneToOne(mappedBy = "company", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
 	private Address address;
 	
 	@ManyToOne

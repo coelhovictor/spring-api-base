@@ -3,10 +3,11 @@ package br.com.coelhovictor.springapibase.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,7 +17,7 @@ public class Address implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "company_id")
 	private Integer id;
 	private String name;
 	private Integer number;
@@ -25,7 +26,9 @@ public class Address implements Serializable {
 	private Integer zip;
 	
 	@JsonIgnore
-	@OneToOne(mappedBy = "address")
+	@OneToOne
+    @MapsId
+    @JoinColumn(name = "company_id")
 	private Company company;
 	
 	public Address() {

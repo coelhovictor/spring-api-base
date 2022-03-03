@@ -43,7 +43,6 @@ public class Owner implements Serializable {
 		this.country = country;
 	}
 
-	@JsonIgnore
 	public Integer getId() {
 		return id;
 	}
