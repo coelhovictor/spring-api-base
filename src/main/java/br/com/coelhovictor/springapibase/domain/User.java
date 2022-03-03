@@ -113,6 +113,7 @@ public class User implements UserDetails, Serializable {
 		this.createdAt = createdAt;
 	}
 	
+	@JsonIgnore
 	public Set<Role> getRoles() {
 		return roles.stream().map(x -> Role.toEnum(x))
 				.collect(Collectors.toSet());
