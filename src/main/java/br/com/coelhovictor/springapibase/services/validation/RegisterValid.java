@@ -9,11 +9,11 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-@Constraint(validatedBy = UserValidator.class)
+@Constraint(validatedBy = RegisterValidator.class)
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface UserValid {
+public @interface RegisterValid {
 
 	String message() default "Validation error";
 

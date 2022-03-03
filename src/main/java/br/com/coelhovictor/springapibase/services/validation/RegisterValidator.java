@@ -9,21 +9,21 @@ import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.com.coelhovictor.springapibase.controllers.exceptions.FieldMessage;
-import br.com.coelhovictor.springapibase.dtos.UserDTO;
+import br.com.coelhovictor.springapibase.dtos.RegisterDTO;
 import br.com.coelhovictor.springapibase.repositories.UserRepository;
 
-public class UserValidator implements 
-	ConstraintValidator<UserValid, UserDTO> {
+public class RegisterValidator implements 
+	ConstraintValidator<RegisterValid, RegisterDTO> {
 	
 	@Autowired
 	private UserRepository repository;
 	
 	@Override
-	public void initialize(UserValid ann) {
+	public void initialize(RegisterValid ann) {
 	}
 
 	@Override
-	public boolean isValid(UserDTO objDTO, ConstraintValidatorContext context) {
+	public boolean isValid(RegisterDTO objDTO, ConstraintValidatorContext context) {
 		List<FieldMessage> list = new ArrayList<>();
 		
 		if(repository.findByEmailIgnoreCase(objDTO.getEmail()) != null)

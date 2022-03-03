@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.coelhovictor.springapibase.domain.User;
+import br.com.coelhovictor.springapibase.dtos.RegisterDTO;
 import br.com.coelhovictor.springapibase.dtos.UserDTO;
 import br.com.coelhovictor.springapibase.repositories.UserRepository;
 import br.com.coelhovictor.springapibase.services.exceptions.ConflictException;
@@ -71,8 +72,14 @@ public class UserService {
 		}
 	}
 	
-	public User fromDTO(UserDTO objDTO) {
+	public User fromDTO(RegisterDTO objDTO) {
 		return new User(null, objDTO.getName(), objDTO.getUsername(), objDTO.getEmail(),
+				passwordEncoder.encode(objDTO.getPassword()), objDTO.getBirthday(),
+				new Date(System.currentTimeMillis()));
+	}
+	
+	public User fromDTO(UserDTO objDTO) {
+		return new User(null, objDTO.getName(), null, null,
 				passwordEncoder.encode(objDTO.getPassword()), objDTO.getBirthday(),
 				new Date(System.currentTimeMillis()));
 	}

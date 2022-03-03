@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.coelhovictor.springapibase.domain.User;
-import br.com.coelhovictor.springapibase.dtos.UserDTO;
+import br.com.coelhovictor.springapibase.dtos.RegisterDTO;
 import br.com.coelhovictor.springapibase.services.UserService;
 
 @RestController
@@ -28,7 +28,7 @@ public class AuthController {
 	}
 	
 	@PostMapping("/register")
-	public ResponseEntity<Void> insert(@Valid @RequestBody UserDTO objDTO) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody RegisterDTO objDTO) {
 		User obj = service.fromDTO(objDTO);
 		service.register(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
