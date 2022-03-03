@@ -101,6 +101,7 @@ public class ResponseExceptionHandler {
 		ErrorResponse error = new ErrorResponse(System.currentTimeMillis(), 
 				httpStatus.value(), httpStatus.getReasonPhrase(), 
 				e.getClass().getSimpleName(), request.getRequestURI());
+		e.printStackTrace();
 		return ResponseEntity.status(httpStatus).body(error);
 	}
 	
