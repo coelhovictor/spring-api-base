@@ -25,9 +25,7 @@ public class ResponseExceptionHandler {
 	public ResponseEntity<ErrorResponse> notFound(NotFoundException e, 
 			HttpServletRequest request) {
 		HttpStatus httpStatus = HttpStatus.NOT_FOUND;
-		ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()), 
-				httpStatus.value(), httpStatus.getReasonPhrase(), e.getMessage(), 
-				request.getRequestURI());
+		ErrorResponse error = error(httpStatus, e.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(httpStatus).body(error);
 	}
 	
@@ -35,10 +33,8 @@ public class ResponseExceptionHandler {
 	public ResponseEntity<ErrorResponse> validation(MethodArgumentNotValidException e, 
 			HttpServletRequest request) {
 		HttpStatus httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
-		ValidationErrorResponse error = new ValidationErrorResponse(
-				new Date(System.currentTimeMillis()), httpStatus.value(), 
-				httpStatus.getReasonPhrase(), e.getClass().getSimpleName(),
-				request.getRequestURI());
+		ValidationErrorResponse error = validationError(httpStatus, 
+				e.getClass().getSimpleName(), request.getRequestURI());
 		
 		for(FieldError fieldError : e.getBindingResult().getFieldErrors()) {
 			error.addError(fieldError.getField(), fieldError.getDefaultMessage());
@@ -50,9 +46,7 @@ public class ResponseExceptionHandler {
 	public ResponseEntity<ErrorResponse> dataIntegrity(DataIntegrityException e, 
 			HttpServletRequest request) {
 		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-		ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()), 
-				httpStatus.value(), httpStatus.getReasonPhrase(), e.getMessage(), 
-				request.getRequestURI());
+		ErrorResponse error = error(httpStatus, e.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(httpStatus).body(error);
 	}
 	
@@ -60,9 +54,8 @@ public class ResponseExceptionHandler {
 	public ResponseEntity<ErrorResponse> messageNotReadable(HttpMessageNotReadableException e, 
 			HttpServletRequest request) {
 		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-		ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()), 
-				httpStatus.value(), httpStatus.getReasonPhrase(), 
-				e.getClass().getSimpleName(), request.getRequestURI());
+		ErrorResponse error = error(httpStatus, e.getClass().getSimpleName(), 
+				request.getRequestURI());
 		return ResponseEntity.status(httpStatus).body(error);
 	}
 	
@@ -80,9 +73,8 @@ public class ResponseExceptionHandler {
 	public ResponseEntity<ErrorResponse> unexpectedType(UnexpectedTypeException e, 
 			HttpServletRequest request) {
 		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-		ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()), 
-				httpStatus.value(), httpStatus.getReasonPhrase(), 
-				e.getClass().getSimpleName(), request.getRequestURI());
+		ErrorResponse error = error(httpStatus, e.getClass().getSimpleName(), 
+				request.getRequestURI());
 		return ResponseEntity.status(httpStatus).body(error);
 	}
 	
@@ -100,11 +92,23 @@ public class ResponseExceptionHandler {
 	public ResponseEntity<ErrorResponse> unexpectedType(Exception e, 
 			HttpServletRequest request) {
 		HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-		ErrorResponse error = new ErrorResponse(new Date(System.currentTimeMillis()), 
-				httpStatus.value(), httpStatus.getReasonPhrase(), 
-				e.getClass().getSimpleName(), request.getRequestURI());
+		ErrorResponse error = error(httpStatus, e.getClass().getSimpleName(), 
+				request.getRequestURI());
 		e.printStackTrace();
 		return ResponseEntity.status(httpStatus).body(error);
+	}
+	
+	private ErrorResponse error(HttpStatus httpStatus, String message, String path) {
+		return new ErrorResponse(new Date(System.currentTimeMillis()), 
+				httpStatus.value(), httpStatus.getReasonPhrase(), message, 
+				path);
+	}
+	
+	private ValidationErrorResponse validationError(HttpStatus httpStatus, String message, 
+			String path) {
+		return new ValidationErrorResponse(
+				new Date(System.currentTimeMillis()), httpStatus.value(), 
+				httpStatus.getReasonPhrase(), message, path);
 	}
 	
 }
