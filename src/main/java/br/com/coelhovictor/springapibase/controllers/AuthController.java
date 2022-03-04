@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.com.coelhovictor.springapibase.domain.User;
 import br.com.coelhovictor.springapibase.dtos.MeDTO;
 import br.com.coelhovictor.springapibase.dtos.RegisterDTO;
+import br.com.coelhovictor.springapibase.dtos.UserDTO;
 import br.com.coelhovictor.springapibase.security.JWTUtil;
 import br.com.coelhovictor.springapibase.services.UserService;
 
@@ -33,6 +35,14 @@ public class AuthController {
 	@GetMapping("/me")
 	public ResponseEntity<MeDTO> me() {
 		return ResponseEntity.ok(new MeDTO(UserService.authenticated()));
+	}
+	
+	@PutMapping("/me")
+	public ResponseEntity<Void> updateMe(@Valid @RequestBody UserDTO objDTO) {
+		User obj = service.fromDTO(objDTO);
+		obj.setUsername(UserService.authenticated().getUsername());
+		obj = service.update(obj);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@PostMapping("/register")
