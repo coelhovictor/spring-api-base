@@ -24,7 +24,7 @@ public class RolesDTO implements Serializable {
 		Set<Role> roles = new HashSet<>();
 		for(String item : this.roles) {
 			Role role = Role.toEnum(item);
-			if(role != null && roles.contains(role))
+			if(role != null && !roles.contains(role))
 				roles.add(role);
 		}
 		return roles;
