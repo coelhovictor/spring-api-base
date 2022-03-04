@@ -23,28 +23,32 @@ public class ContractValidator implements
 	public boolean isValid(ContractDTO objDTO, ConstraintValidatorContext context) {
 		List<FieldMessage> list = new ArrayList<>();
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		
-		Calendar calendarMin = Calendar.getInstance();
-		calendarMin.add(Calendar.YEAR, -150);
-		Date minDate = calendarMin.getTime();
-		
-		Calendar calendarMax = Calendar.getInstance();
-		calendarMax.add(Calendar.YEAR, 100);
-		Date maxDate = calendarMax.getTime();
-		
-		if(objDTO.getStartDate().before(minDate))
-			list.add(new FieldMessage("startDate", "Must be greater "
-					+ "than " + dateFormat.format(minDate)));
-		
-		if(objDTO.getEndDate() != null) {
-			if(objDTO.getEndDate().after(maxDate))
-				list.add(new FieldMessage("endDate", "Must be less "
-						+ "than " + dateFormat.format(maxDate)));
+		try {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			
-			if(objDTO.getEndDate().before(objDTO.getStartDate()))
-				list.add(new FieldMessage("endDate", "Must be greater than "
-						+ "the startDate"));
+			Calendar calendarMin = Calendar.getInstance();
+			calendarMin.add(Calendar.YEAR, -150);
+			Date minDate = calendarMin.getTime();
+			
+			Calendar calendarMax = Calendar.getInstance();
+			calendarMax.add(Calendar.YEAR, 100);
+			Date maxDate = calendarMax.getTime();
+			
+			if(objDTO.getStartDate().before(minDate))
+				list.add(new FieldMessage("startDate", "Must be greater "
+						+ "than " + dateFormat.format(minDate)));
+			
+			if(objDTO.getEndDate() != null) {
+				if(objDTO.getEndDate().after(maxDate))
+					list.add(new FieldMessage("endDate", "Must be less "
+							+ "than " + dateFormat.format(maxDate)));
+				
+				if(objDTO.getEndDate().before(objDTO.getStartDate()))
+					list.add(new FieldMessage("endDate", "Must be greater than "
+							+ "the startDate"));
+			}
+		} catch (NullPointerException e) {
+			return false;
 		}
 		
 		for(FieldMessage fieldMessage : list) {

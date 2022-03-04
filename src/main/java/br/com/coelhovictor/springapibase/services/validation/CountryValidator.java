@@ -26,9 +26,13 @@ public class CountryValidator implements
 	public boolean isValid(CountryDTO objDTO, ConstraintValidatorContext context) {
 		List<FieldMessage> list = new ArrayList<>();
 		
-		if(repository.findByNameIgnoreCase(objDTO.getName()) != null)
-			list.add(new FieldMessage("name", "A country with that "
-					+ "name already exists"));
+		try {
+			if(repository.findByNameIgnoreCase(objDTO.getName()) != null)
+				list.add(new FieldMessage("name", "A country with that "
+						+ "name already exists"));
+		} catch (NullPointerException e) {
+			return false;
+		}
 		
 		for(FieldMessage fieldMessage : list) {
 			context.disableDefaultConstraintViolation();

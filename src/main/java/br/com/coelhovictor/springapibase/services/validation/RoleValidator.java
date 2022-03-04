@@ -21,10 +21,14 @@ public class RoleValidator implements
 	public boolean isValid(RolesDTO objDTO, ConstraintValidatorContext context) {
 		List<FieldMessage> list = new ArrayList<>();
 
-		for(String roleName : objDTO.getRolesNames()) {
-			if(Role.toEnum(roleName) == null)
-				list.add(new FieldMessage("roles", "Role '" + roleName + "' " +
-						"does not exist"));
+		try {
+			for(String roleName : objDTO.getRolesNames()) {
+				if(Role.toEnum(roleName) == null)
+					list.add(new FieldMessage("roles", "Role '" + roleName + "' " +
+							"does not exist"));
+			}
+		} catch (NullPointerException e) {
+			return false;
 		}
 		
 		for(FieldMessage fieldMessage : list) {

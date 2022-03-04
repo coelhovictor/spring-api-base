@@ -23,21 +23,25 @@ public class CompanyValidator implements
 	public boolean isValid(CompanyDTO objDTO, ConstraintValidatorContext context) {
 		List<FieldMessage> list = new ArrayList<>();
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		
-		Calendar calendarMin = Calendar.getInstance();
-		calendarMin.add(Calendar.YEAR, -550);
-		Date minDate = calendarMin.getTime();
-		
-		Date maxDate = new Date(System.currentTimeMillis());
-		
-		if(objDTO.getFoundationDate().before(minDate))
-			list.add(new FieldMessage("foundationDate", "Must be greater "
-					+ "than " + dateFormat.format(minDate)));
-		
-		if(objDTO.getFoundationDate().after(maxDate))
-			list.add(new FieldMessage("foundationDate", "Must be less "
-					+ "than " + dateFormat.format(maxDate)));
+		try {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			
+			Calendar calendarMin = Calendar.getInstance();
+			calendarMin.add(Calendar.YEAR, -550);
+			Date minDate = calendarMin.getTime();
+			
+			Date maxDate = new Date(System.currentTimeMillis());
+			
+			if(objDTO.getFoundationDate().before(minDate))
+				list.add(new FieldMessage("foundationDate", "Must be greater "
+						+ "than " + dateFormat.format(minDate)));
+			
+			if(objDTO.getFoundationDate().after(maxDate))
+				list.add(new FieldMessage("foundationDate", "Must be less "
+						+ "than " + dateFormat.format(maxDate)));
+		} catch (NullPointerException e) {
+			return false;
+		}
 		
 		for(FieldMessage fieldMessage : list) {
 			context.disableDefaultConstraintViolation();

@@ -26,13 +26,17 @@ public class RegisterValidator implements
 	public boolean isValid(RegisterDTO objDTO, ConstraintValidatorContext context) {
 		List<FieldMessage> list = new ArrayList<>();
 		
-		if(repository.findByEmailIgnoreCase(objDTO.getEmail()) != null)
-			list.add(new FieldMessage("name", "A user with that "
-					+ "email already exists"));
-		
-		if(repository.findByUsernameIgnoreCase(objDTO.getUsername()) != null)
-			list.add(new FieldMessage("name", "A user with that "
-					+ "username already exists"));
+		try {
+			if(repository.findByEmailIgnoreCase(objDTO.getEmail()) != null)
+				list.add(new FieldMessage("name", "A user with that "
+						+ "email already exists"));
+			
+			if(repository.findByUsernameIgnoreCase(objDTO.getUsername()) != null)
+				list.add(new FieldMessage("name", "A user with that "
+						+ "username already exists"));
+		} catch (NullPointerException e) {
+			return false;
+		}
 		
 		for(FieldMessage fieldMessage : list) {
 			context.disableDefaultConstraintViolation();

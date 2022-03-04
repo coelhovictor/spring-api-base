@@ -20,25 +20,29 @@ public class AddressValidator implements
 	public boolean isValid(AddressDTO objDTO, ConstraintValidatorContext context) {
 		List<FieldMessage> list = new ArrayList<>();
 		
-		int zip = objDTO.getZip();
-		String zipStr = zip + "";
-		
-		if(zip < 0 || zip > 999999999)
-			list.add(new FieldMessage("zip", "Invalid value"));
-		
-		if(zipStr.length() < 5 || zipStr.length() > 9)
-			list.add(new FieldMessage("zip", "The range must be "
-					+ "between 5 and 9 characters"));
-		
-		int number = objDTO.getNumber();
-		String numberStr = number + "";
-		
-		if(number < 0 || number > 99999)
-			list.add(new FieldMessage("number", "Invalid value"));
-		
-		if(numberStr.length() > 5)
-			list.add(new FieldMessage("number", "The range must be "
-					+ "between 1 and 5 characters"));
+		try {
+			int zip = objDTO.getZip();
+			String zipStr = zip + "";
+			
+			if(zip < 0 || zip > 999999999)
+				list.add(new FieldMessage("zip", "Invalid value"));
+			
+			if(zipStr.length() < 5 || zipStr.length() > 9)
+				list.add(new FieldMessage("zip", "The range must be "
+						+ "between 5 and 9 characters"));
+			
+			int number = objDTO.getNumber();
+			String numberStr = number + "";
+			
+			if(number < 0 || number > 99999)
+				list.add(new FieldMessage("number", "Invalid value"));
+			
+			if(numberStr.length() > 5)
+				list.add(new FieldMessage("number", "The range must be "
+						+ "between 1 and 5 characters"));
+		} catch (NullPointerException e) {
+			return false;
+		}
 		
 		for(FieldMessage fieldMessage : list) {
 			context.disableDefaultConstraintViolation();
