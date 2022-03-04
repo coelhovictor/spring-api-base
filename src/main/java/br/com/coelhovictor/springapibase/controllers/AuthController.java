@@ -2,6 +2,7 @@ package br.com.coelhovictor.springapibase.controllers;
 
 import java.net.URI;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.com.coelhovictor.springapibase.domain.User;
 import br.com.coelhovictor.springapibase.dtos.MeDTO;
 import br.com.coelhovictor.springapibase.dtos.RegisterDTO;
+import br.com.coelhovictor.springapibase.security.JWTUtil;
 import br.com.coelhovictor.springapibase.services.UserService;
 
 @RestController
@@ -24,6 +26,9 @@ public class AuthController {
 
 	@Autowired
 	private UserService service;
+
+	@Autowired
+	private JWTUtil jwtUtil;
 	
 	@GetMapping("/me")
 	public ResponseEntity<MeDTO> me() {
@@ -37,6 +42,14 @@ public class AuthController {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/me").build().toUri();
 		return ResponseEntity.created(uri).build();
+	}
+	
+	@PostMapping("/refresh_token")
+	public ResponseEntity<Void> refreshToken(HttpServletResponse response) {
+		User user = UserService.authenticated();
+		String token = jwtUtil.generateToken(user.getUsername());
+		response.addHeader("Authorization", "Bearer " + token);
+		return ResponseEntity.noContent().build();
 	}
 	
 }
