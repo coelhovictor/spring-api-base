@@ -18,11 +18,11 @@ public class ContractDTO implements Serializable {
 
 	private Integer id;
 	
-	@JsonFormat(pattern = "MM/dd/yyyy")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@NotNull(message = "Required field")
 	private Date startDate;
 	
-	@JsonFormat(pattern = "MM/dd/yyyy")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
 	
 	@Range(min = 100, max = 100000000, message = "The range must be "

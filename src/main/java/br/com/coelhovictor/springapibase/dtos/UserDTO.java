@@ -27,7 +27,7 @@ public class UserDTO implements Serializable {
 			+ "between 3 and 32 characters")
 	private String password;
 	
-	@JsonFormat(pattern = "MM/dd/yyyy")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date birthday;
 	
 	public UserDTO() {

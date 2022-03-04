@@ -2,6 +2,7 @@ package br.com.coelhovictor.springapibase.security;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -74,7 +75,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         private String json(String path) {
         	HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
         	
-            return "{\"timestamp\": " + System.currentTimeMillis() + ", "
+            return "{\"timestamp\": \"" + new Date() + "\", "
                 + "\"status\": " + httpStatus.value() + ", "
                 + "\"status\": \"" + httpStatus.getReasonPhrase() + "\", "
                 + "\"message\": \"Invalid credentials\", "

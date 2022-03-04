@@ -23,7 +23,7 @@ public class ContractValidator implements
 	public boolean isValid(ContractDTO objDTO, ConstraintValidatorContext context) {
 		List<FieldMessage> list = new ArrayList<>();
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		
 		Calendar calendarMin = Calendar.getInstance();
 		calendarMin.add(Calendar.YEAR, -150);

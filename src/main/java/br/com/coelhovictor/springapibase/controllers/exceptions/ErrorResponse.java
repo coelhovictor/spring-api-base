@@ -1,17 +1,18 @@
 package br.com.coelhovictor.springapibase.controllers.exceptions;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class ErrorResponse implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Long timestamp;
+	private Date timestamp;
 	private Integer status;
 	private String error;
 	private String message;
 	private String path;
 
-	public ErrorResponse(Long timestamp, Integer status, String error, 
+	public ErrorResponse(Date timestamp, Integer status, String error, 
 			String message, String path) {
 		super();
 		this.timestamp = timestamp;
@@ -21,11 +22,11 @@ public class ErrorResponse implements Serializable {
 		this.path = path;
 	}
 
-	public Long getTimestamp() {
+	public Date getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(Long timestamp) {
+	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
 

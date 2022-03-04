@@ -45,10 +45,9 @@ public class User implements UserDetails, Serializable {
 	@JsonIgnore
 	private String password;
 	
-	@JsonFormat(pattern = "MM/dd/yyyy")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date birthday;
 	
-	@JsonFormat(pattern = "MM/dd/yyyy")
 	private Date createdAt;
 	
 	@ElementCollection(fetch=FetchType.EAGER)

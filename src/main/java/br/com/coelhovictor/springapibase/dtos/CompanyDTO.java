@@ -30,7 +30,7 @@ public class CompanyDTO implements Serializable {
 			+ "between 3 and 30 characters")
 	private String shortName;
 	
-	@JsonFormat(pattern = "MM/dd/yyyy")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@NotNull(message = "Required field")
 	private Date foundationDate;
 	
