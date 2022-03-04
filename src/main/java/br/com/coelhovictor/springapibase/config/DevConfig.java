@@ -22,6 +22,8 @@ public class DevConfig {
 
 	@Bean
 	public boolean instantiateDatabase() throws ParseException {
+		dbService.createOrUpdateRootUser();
+		
 		if(!strategy.equals("create"))
 			return false;
 

@@ -97,12 +97,22 @@ public class DbService {
 		User u1 = new User(null, "Victor Coelho", "coelhovictor", 
 				"coelho.victor@email.com",  passwordEncoder.encode("123"), 
 				dateFormat.parse("08/04/2001"),  new Date(System.currentTimeMillis()));
-		User u2 = new User(null, "Root Toor", "root", "root@email.com", 
-				passwordEncoder.encode("123"), dateFormat.parse("01/01/1999"), 
-				new Date(System.currentTimeMillis()));
-		u2.addRole(Role.ADMIN);
 		
-		userRepository.saveAll(Arrays.asList(u1, u2));
+		userRepository.saveAll(Arrays.asList(u1));
+		
+	}
+	
+	public void createOrUpdateRootUser() {
+		
+		User root = userRepository.findByUsernameIgnoreCase("root");
+		Integer id = root != null ? root.getId() : null;
+		
+		root = new User(id, "Root Toor", "root", "root@email.com", 
+				passwordEncoder.encode("123"), new Date(System.currentTimeMillis()), 
+				new Date(System.currentTimeMillis()));
+		root.addRole(Role.ADMIN);
+	
+		userRepository.save(root);
 		
 	}
 	
