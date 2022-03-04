@@ -17,10 +17,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import br.com.coelhovictor.springapibase.domain.User;
-import br.com.coelhovictor.springapibase.dtos.AuthDTO;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -33,22 +30,20 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		setAuthenticationFailureHandler(new JWTAuthenticationFailureHandler());
 		this.authenticationManager = authenticationManager;
 		this.jwtUtil = jwtUtil;
+		
+		 setFilterProcessesUrl("/auth/login");
 	}
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest req,
 			HttpServletResponse res) {
-		try {
-			AuthDTO creds = new ObjectMapper()
-					.readValue(req.getInputStream(), AuthDTO.class);
-			UsernamePasswordAuthenticationToken authToken = 
-					new UsernamePasswordAuthenticationToken(creds.getUsername(), 
-							creds.getPassword(), new ArrayList<>());
-			Authentication auth = authenticationManager.authenticate(authToken);
-			return auth;
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		String username = req.getParameter("username");
+		String password = req.getParameter("password");
+		UsernamePasswordAuthenticationToken authToken = 
+				new UsernamePasswordAuthenticationToken(username, 
+						password, new ArrayList<>());
+		Authentication auth = authenticationManager.authenticate(authToken);
+		return auth;
 	}
 
 	@Override

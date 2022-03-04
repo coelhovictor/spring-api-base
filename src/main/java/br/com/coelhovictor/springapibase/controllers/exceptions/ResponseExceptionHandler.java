@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -88,8 +89,17 @@ public class ResponseExceptionHandler {
 		return ResponseEntity.status(httpStatus).body(error);
 	}
 	
+	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+	public ResponseEntity<ErrorResponse> unexpectedType(HttpRequestMethodNotSupportedException e, 
+			HttpServletRequest request) {
+		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+		ErrorResponse error = error(httpStatus, e.getClass().getSimpleName(), 
+				request.getRequestURI());
+		return ResponseEntity.status(httpStatus).body(error);
+	}
+	
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<ErrorResponse> unexpectedType(Exception e, 
+	public ResponseEntity<ErrorResponse> exception(Exception e, 
 			HttpServletRequest request) {
 		HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 		ErrorResponse error = error(httpStatus, e.getClass().getSimpleName(), 
