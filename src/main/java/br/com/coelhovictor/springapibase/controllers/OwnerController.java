@@ -35,29 +35,29 @@ public class OwnerController {
 	@Autowired
 	private CompanyService companyService;
 
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<Owner> find(@PathVariable Integer id) {
-		return ResponseEntity.ok(service.findById(id));
+	@GetMapping(value = "/{ownerId}")
+	public ResponseEntity<Owner> find(@PathVariable Integer ownerId) {
+		return ResponseEntity.ok(service.findById(ownerId));
 	}
 	
 	@GetMapping()
 	public ResponseEntity<Page<Owner>> findPage(
 			@RequestParam(value = "page", defaultValue = "0") Integer page, 
-			@RequestParam(value = "linesPerPage", defaultValue = "5") Integer linesPerPage, 
+			@RequestParam(value = "size", defaultValue = "5") Integer size, 
 			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy, 
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-		Page<Owner> list = service.findAll(page, linesPerPage, orderBy, direction);
+		Page<Owner> list = service.findAll(page, size, orderBy, direction);
 		return ResponseEntity.ok(list);
 	}
 	
-	@GetMapping("/{id}/companies")
+	@GetMapping("/{ownerId}/companies")
 	public ResponseEntity<Page<Company>> findCompaniesPage(
-			@PathVariable Integer id,
+			@PathVariable Integer ownerId,
 			@RequestParam(value = "page", defaultValue = "0") Integer page, 
-			@RequestParam(value = "linesPerPage", defaultValue = "5") Integer linesPerPage, 
+			@RequestParam(value = "size", defaultValue = "5") Integer size, 
 			@RequestParam(value = "orderBy", defaultValue = "foundationDate") String orderBy, 
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-		Page<Company> list = companyService.findByOwner(id, page, linesPerPage, 
+		Page<Company> list = companyService.findByOwner(ownerId, page, size, 
 				orderBy, direction);
 		return ResponseEntity.ok(list);
 	}
@@ -68,24 +68,24 @@ public class OwnerController {
 		Owner obj = service.fromDTO(objDTO);
 		service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+				.path("/{ownerId}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@PutMapping("/{id}")
+	@PutMapping("/{ownerId}")
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	public ResponseEntity<Void> update(@PathVariable Integer id, 
+	public ResponseEntity<Void> update(@PathVariable Integer ownerId, 
 			@Valid @RequestBody OwnerDTO objDTO) {
 		Owner obj = service.fromDTO(objDTO);
-		obj.setId(id);
+		obj.setId(ownerId);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{ownerId}")
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	public ResponseEntity<Void> delete(@PathVariable Integer id) {
-		service.delete(id);
+	public ResponseEntity<Void> delete(@PathVariable Integer ownerId) {
+		service.delete(ownerId);
 		return ResponseEntity.noContent().build();
 	}
 	

@@ -35,29 +35,29 @@ public class CompanyController {
 	@Autowired
 	private ContractService contractService;
 
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<Company> find(@PathVariable Integer id) {
-		return ResponseEntity.ok(service.findById(id));
+	@GetMapping(value = "/{companyId}")
+	public ResponseEntity<Company> find(@PathVariable Integer companyId) {
+		return ResponseEntity.ok(service.findById(companyId));
 	}
 	
 	@GetMapping()
 	public ResponseEntity<Page<Company>> findPage(
 			@RequestParam(value = "page", defaultValue = "0") Integer page, 
-			@RequestParam(value = "linesPerPage", defaultValue = "5") Integer linesPerPage, 
+			@RequestParam(value = "size", defaultValue = "5") Integer size, 
 			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy, 
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-		Page<Company> list = service.findAll(page, linesPerPage, orderBy, direction);
+		Page<Company> list = service.findAll(page, size, orderBy, direction);
 		return ResponseEntity.ok(list);
 	}
 	
-	@GetMapping("/{id}/contracts")
+	@GetMapping("/{companyId}/contracts")
 	public ResponseEntity<Page<Contract>> findContractsPage(
-			@PathVariable Integer id,
+			@PathVariable Integer companyId,
 			@RequestParam(value = "page", defaultValue = "0") Integer page, 
 			@RequestParam(value = "linesPerPage", defaultValue = "5") Integer linesPerPage, 
 			@RequestParam(value = "orderBy", defaultValue = "startDate") String orderBy, 
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-		Page<Contract> list = contractService.findByCompany(id, page, linesPerPage, 
+		Page<Contract> list = contractService.findByCompany(companyId, page, linesPerPage, 
 				orderBy, direction);
 		return ResponseEntity.ok(list);
 	}
@@ -68,24 +68,24 @@ public class CompanyController {
 		Company obj = service.fromDTO(objDTO);
 		service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+				.path("/{companyId}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@PutMapping("/{id}")
+	@PutMapping("/{companyId}")
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	public ResponseEntity<Void> update(@PathVariable Integer id, 
+	public ResponseEntity<Void> update(@PathVariable Integer companyId, 
 			@Valid @RequestBody CompanyDTO objDTO) {
 		Company obj = service.fromDTO(objDTO);
-		obj.setId(id);
+		obj.setId(companyId);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{companyId}")
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	public ResponseEntity<Void> delete(@PathVariable Integer id) {
-		service.delete(id);
+	public ResponseEntity<Void> delete(@PathVariable Integer companyId) {
+		service.delete(companyId);
 		return ResponseEntity.noContent().build();
 	}
 	

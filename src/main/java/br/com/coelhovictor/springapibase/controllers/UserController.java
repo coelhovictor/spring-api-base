@@ -32,9 +32,9 @@ public class UserController {
 	@Autowired
 	private UserService service;
 	
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<User> find(@PathVariable Integer id) {
-		return ResponseEntity.ok(service.findById(id));
+	@GetMapping(value = "/{userId}")
+	public ResponseEntity<User> find(@PathVariable Integer userId) {
+		return ResponseEntity.ok(service.findById(userId));
 	}
 	
 	@GetMapping(value = "/email")
@@ -46,10 +46,10 @@ public class UserController {
 	@GetMapping()
 	public ResponseEntity<Page<User>> findPage(
 			@RequestParam(value = "page", defaultValue = "0") Integer page, 
-			@RequestParam(value = "linesPerPage", defaultValue = "5") Integer linesPerPage, 
+			@RequestParam(value = "size", defaultValue = "5") Integer size, 
 			@RequestParam(value = "orderBy", defaultValue = "createdAt") String orderBy, 
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-		Page<User> list = service.findAll(page, linesPerPage, orderBy, direction);
+		Page<User> list = service.findAll(page, size, orderBy, direction);
 		return ResponseEntity.ok(list);
 	}
 	
@@ -58,22 +58,22 @@ public class UserController {
 		User obj = service.fromDTO(objDTO);
 		service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+				.path("/{userId}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@PutMapping("/{id}")
-	public ResponseEntity<Void> update(@PathVariable Integer id, 
+	@PutMapping("/{userId}")
+	public ResponseEntity<Void> update(@PathVariable Integer userId, 
 			@Valid @RequestBody UserDTO objDTO) {
 		User obj = service.fromDTO(objDTO);
-		obj.setId(id);
+		obj.setId(userId);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Integer id) {
-		service.delete(id);
+	@DeleteMapping("/{userId}")
+	public ResponseEntity<Void> delete(@PathVariable Integer userId) {
+		service.delete(userId);
 		return ResponseEntity.noContent().build();
 	}
 	

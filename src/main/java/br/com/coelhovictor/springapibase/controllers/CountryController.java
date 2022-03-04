@@ -30,18 +30,18 @@ public class CountryController {
 	@Autowired
 	private CountryService service;
 
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<Country> find(@PathVariable Integer id) {
-		return ResponseEntity.ok(service.findById(id));
+	@GetMapping(value = "/{countryId}")
+	public ResponseEntity<Country> find(@PathVariable Integer countryId) {
+		return ResponseEntity.ok(service.findById(countryId));
 	}
 	
 	@GetMapping()
 	public ResponseEntity<Page<Country>> findPage(
 			@RequestParam(value = "page", defaultValue = "0") Integer page, 
-			@RequestParam(value = "linesPerPage", defaultValue = "5") Integer linesPerPage, 
+			@RequestParam(value = "size", defaultValue = "5") Integer size, 
 			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy, 
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-		Page<Country> list = service.findAll(page, linesPerPage, orderBy, direction);
+		Page<Country> list = service.findAll(page, size, orderBy, direction);
 		return ResponseEntity.ok(list);
 	}
 
@@ -51,24 +51,24 @@ public class CountryController {
 		Country obj = service.fromDTO(objDTO);
 		service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+				.path("/{countryId}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@PutMapping("/{id}")
+	@PutMapping("/{countryId}")
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	public ResponseEntity<Void> update(@PathVariable Integer id, 
+	public ResponseEntity<Void> update(@PathVariable Integer countryId, 
 			@Valid @RequestBody CountryDTO objDTO) {
 		Country obj = service.fromDTO(objDTO);
-		obj.setId(id);
+		obj.setId(countryId);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{countryId}")
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	public ResponseEntity<Void> delete(@PathVariable Integer id) {
-		service.delete(id);
+	public ResponseEntity<Void> delete(@PathVariable Integer countryId) {
+		service.delete(countryId);
 		return ResponseEntity.noContent().build();
 	}
 	

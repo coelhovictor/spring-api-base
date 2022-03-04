@@ -30,18 +30,18 @@ public class ContractController {
 	@Autowired
 	private ContractService service;
 
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<Contract> find(@PathVariable Integer id) {
-		return ResponseEntity.ok(service.findById(id));
+	@GetMapping(value = "/{contractId}")
+	public ResponseEntity<Contract> find(@PathVariable Integer contractId) {
+		return ResponseEntity.ok(service.findById(contractId));
 	}
 	
 	@GetMapping()
 	public ResponseEntity<Page<Contract>> findPage(
 			@RequestParam(value = "page", defaultValue = "0") Integer page, 
-			@RequestParam(value = "linesPerPage", defaultValue = "5") Integer linesPerPage, 
+			@RequestParam(value = "size", defaultValue = "5") Integer size, 
 			@RequestParam(value = "orderBy", defaultValue = "startDate") String orderBy, 
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-		Page<Contract> list = service.findAll(page, linesPerPage, orderBy, direction);
+		Page<Contract> list = service.findAll(page, size, orderBy, direction);
 		return ResponseEntity.ok(list);
 	}
 	
@@ -51,24 +51,24 @@ public class ContractController {
 		Contract obj = service.fromDTO(objDTO);
 		service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+				.path("/{contractId}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping("/{contractId}")
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	public ResponseEntity<Void> update(@PathVariable Integer id, 
+	public ResponseEntity<Void> update(@PathVariable Integer contractId, 
 			@Valid @RequestBody ContractDTO objDTO) {
 		Contract obj = service.fromDTO(objDTO);
-		obj.setId(id);
+		obj.setId(contractId);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{contractId}")
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	public ResponseEntity<Void> delete(@PathVariable Integer id) {
-		service.delete(id);
+	public ResponseEntity<Void> delete(@PathVariable Integer contractId) {
+		service.delete(contractId);
 		return ResponseEntity.noContent().build();
 	}
 	
