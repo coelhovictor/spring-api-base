@@ -32,13 +32,13 @@ public class UserController {
 	@Autowired
 	private UserService service;
 	
-	@GetMapping(value = "/{userId}")
-	public ResponseEntity<User> find(@PathVariable Integer userId) {
-		return ResponseEntity.ok(service.findById(userId));
+	@GetMapping(value = "/{username}")
+	public ResponseEntity<User> find(@PathVariable String username) {
+		return ResponseEntity.ok(service.findByUsername(username));
 	}
 	
 	@GetMapping(value = "/email")
-	public ResponseEntity<User> find(@RequestParam(value = "value")
+	public ResponseEntity<User> findByEmail(@RequestParam(value = "value")
 			String email) {
 		return ResponseEntity.ok(service.findByEmail(email));
 	}
@@ -62,18 +62,18 @@ public class UserController {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@PutMapping("/{userId}")
-	public ResponseEntity<Void> update(@PathVariable Integer userId, 
+	@PutMapping("/{username}")
+	public ResponseEntity<Void> update(@PathVariable String username, 
 			@Valid @RequestBody UserDTO objDTO) {
 		User obj = service.fromDTO(objDTO);
-		obj.setId(userId);
+		obj.setUsername(username);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@DeleteMapping("/{userId}")
-	public ResponseEntity<Void> delete(@PathVariable Integer userId) {
-		service.delete(userId);
+	@DeleteMapping("/{username}")
+	public ResponseEntity<Void> delete(@PathVariable String username) {
+		service.delete(username);
 		return ResponseEntity.noContent().build();
 	}
 	

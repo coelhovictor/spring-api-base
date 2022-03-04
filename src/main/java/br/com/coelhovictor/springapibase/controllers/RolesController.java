@@ -16,7 +16,7 @@ import br.com.coelhovictor.springapibase.dtos.RolesDTO;
 import br.com.coelhovictor.springapibase.services.RolesService;
 
 @RestController
-@RequestMapping("/users/{userId}/roles")
+@RequestMapping("/users/{username}/roles")
 @PreAuthorize("hasAnyRole('ADMIN')")
 public class RolesController {
 	
@@ -24,16 +24,16 @@ public class RolesController {
 	private RolesService service;
 
 	@PutMapping()
-	public ResponseEntity<Void> update(@PathVariable Integer userId, 
+	public ResponseEntity<Void> update(@PathVariable String username, 
 			@Valid @RequestBody RolesDTO objDTO) {
-		service.insert(userId, objDTO);
+		service.insert(username, objDTO);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping()
-	public ResponseEntity<Void> delete(@PathVariable Integer userId, 
+	public ResponseEntity<Void> delete(@PathVariable String username, 
 			@Valid @RequestBody RolesDTO objDTO) {
-		service.delete(userId, objDTO);
+		service.delete(username, objDTO);
 		return ResponseEntity.noContent().build();
 	}
 	

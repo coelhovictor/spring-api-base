@@ -15,8 +15,8 @@ public class RolesService {
 	@Autowired
 	private UserService service;
 	
-	public User insert(Integer userId, RolesDTO objDTO) {
-		User user = service.findById(userId);
+	public User insert(String username, RolesDTO objDTO) {
+		User user = service.findByUsername(username);
 		Set<Role> roles = user.getRoles();
 		
 		for(Role item : objDTO.getRoles()) {
@@ -28,8 +28,8 @@ public class RolesService {
 		return user;
 	}
 	
-	public User delete(Integer userId, RolesDTO objDTO) {
-		User user = service.findById(userId);
+	public User delete(String username, RolesDTO objDTO) {
+		User user = service.findByUsername(username);
 		Set<Role> roles = user.getRoles();
 		
 		for(Role item : objDTO.getRoles()) {

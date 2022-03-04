@@ -33,6 +33,14 @@ public class UserService {
 			new NotFoundException("User", id));
 	}
 	
+	public User findByUsername(String username) {
+		User user = repository.findByUsernameIgnoreCase(username);
+		if(user == null)
+			throw new NotFoundException("User", username);
+		
+		return user;
+	}
+	
 	public User findByEmail(String email) {
 		User user = repository.findByEmailIgnoreCase(email);
 		if(user == null)
@@ -62,19 +70,19 @@ public class UserService {
 	}
 	
 	public User update(User obj) {
-		User newObj = findById(obj.getId());
+		User newObj = findByUsername(obj.getUsername());
 		updateData(newObj, obj);
 		return repository.save(newObj);
 	}
 	
-	public void delete(Integer id) {
+	public void delete(String username) {
 		User currentUser = authenticated();
-		if(currentUser.getId() == id)
+		if(currentUser.getUsername().equalsIgnoreCase(username))
 			throw new ConflictException("You can't delete yourself");
 		
-		findById(id);
+		User user = findByUsername(username);
 		try {
-			repository.deleteById(id);
+			repository.deleteById(user.getId());
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Cannot delete this user");
 		}
